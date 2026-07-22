@@ -964,20 +964,25 @@ a {
     gap: 0.5rem;
 }
 
-.hint-close-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-    margin-left: 0.4rem;
+.hint-close-btn, .close-btn, .close-modal, #closeCompareBarBtn {
+    background: rgba(239, 68, 68, 0.2) !important;
+    border: 1px solid rgba(239, 68, 68, 0.5) !important;
+    color: #ff4d4d !important;
+    font-size: 1.1rem !important;
+    margin-left: 0.5rem;
     cursor: pointer;
-    padding: 0 4px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease-in-out;
 }
-.hint-close-btn:hover {
-    color: var(--red);
-    background: rgba(239, 68, 68, 0.2);
+.hint-close-btn:hover, .close-btn:hover, .close-modal:hover, #closeCompareBarBtn:hover {
+    color: white !important;
+    background: #ef4444 !important;
+    transform: scale(1.15) rotate(90deg);
 }
 
 @keyframes floatBounce {

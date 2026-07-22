@@ -630,35 +630,40 @@ function renderCards(exams, append = false) {
     });
 }
 
-async function openExamDetail(id) {
+function openExamDetail(id) {
     state.currentExamId = id;
-    
     let exam = state.exams.find(e => e.id === id);
     
-    // Attempt single exam API lookup with graceful fallback
-    try {
-        const res = await fetch(`/api/exams/${encodeURIComponent(id)}`);
-        if (res.ok) {
-            const fetched = await res.json();
-            if (fetched && fetched.name) exam = fetched;
-        }
-    } catch (err) {
-        console.log('Using local exam state object');
-    }
+    // OPEN DRAWER INSTANTLY ON FRAME 1 (0ms response time)
+    elements.drawerOverlay.classList.add('show');
+    elements.examDrawer.classList.add('open');
 
-    if (!exam) {
-        console.error('Exam not found:', id);
-        return;
+    if (exam) {
+        renderDrawerDetails(exam);
     }
     
-    document.getElementById('detailVolumeBadge').textContent = `Vol.${exam.volume}`;
-    document.getElementById('detailVolumeBadge').className = `volume-badge vol-${exam.volume}-badge`;
+    // Asynchronously fetch extra details if available without blocking UI
+    fetch(`/api/exams/${encodeURIComponent(id)}`)
+        .then(res => res.ok ? res.json() : null)
+        .then(fetched => {
+            if (fetched && fetched.name) renderDrawerDetails(fetched);
+        })
+        .catch(err => console.log('Using state exam object:', err));
+}
+
+function renderDrawerDetails(exam) {
+    if (!exam) return;
+    
+    document.getElementById('detailVolumeBadge').textContent = `Vol.${exam.volume || 1}`;
+    document.getElementById('detailVolumeBadge').className = `volume-badge vol-${exam.volume || 1}-badge`;
     document.getElementById('detailAcronym').textContent = exam.acronym || exam.id;
     document.getElementById('detailName').textContent = exam.name;
     
     const bmBtn = document.getElementById('detailBookmarkBtn');
-    bmBtn.classList.toggle('active', state.bookmarks.includes(exam.id));
-    bmBtn.onclick = () => { toggleBookmark(exam.id); bmBtn.classList.toggle('active'); };
+    if (bmBtn) {
+        bmBtn.classList.toggle('active', state.bookmarks.includes(exam.id));
+        bmBtn.onclick = () => { toggleBookmark(exam.id); bmBtn.classList.toggle('active'); };
+    }
     
     // 1. Overview Tab
     document.getElementById('detBody').textContent = exam.conductingBody || 'N/A';
@@ -670,14 +675,19 @@ async function openExamDetail(id) {
     benList.innerHTML = benefits.map(b => `<li><i class="fa-solid fa-check text-green mr-2"></i> ${b}</li>`).join('');
     
     const siteBtn = document.getElementById('detWebsite');
-    siteBtn.href = exam.officialWebsite || 'https://google.com';
-    siteBtn.target = '_blank';
+    if (siteBtn) {
+        siteBtn.href = exam.officialWebsite || 'https://google.com';
+        siteBtn.target = '_blank';
+    }
 
-    document.getElementById('detAiUpdate').onclick = () => {
-        elements.aiChatPanel.classList.add('open');
-        document.getElementById('chatInput').value = `Tell me all about ${exam.acronym || exam.name} syllabus and career growth.`;
-        handleChatSubmit(new Event('submit'));
-    };
+    const aiUpdateBtn = document.getElementById('detAiUpdate');
+    if (aiUpdateBtn) {
+        aiUpdateBtn.onclick = () => {
+            elements.aiChatPanel.classList.add('open');
+            document.getElementById('chatInput').value = `Tell me all about ${exam.acronym || exam.name} syllabus and career growth.`;
+            handleChatSubmit(new Event('submit'));
+        };
+    }
 
     // 2. Eligibility Tab
     const elig = exam.eligibility || {};
@@ -772,9 +782,6 @@ async function openExamDetail(id) {
     // Clear realtime loader state
     elements.realtimeContent.classList.add('hidden');
     elements.realtimeLoader.classList.remove('hidden');
-
-    elements.drawerOverlay.classList.add('show');
-    elements.examDrawer.classList.add('open');
     elements.chatContext.textContent = exam.acronym || exam.name;
 }
 
