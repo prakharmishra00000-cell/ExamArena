@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExamArena - Your Complete Engineering Career Roadmap</title>
+    <meta name="description" content="Discover 500+ engineering exams, track syllabus, compare options, and get AI-powered career roadmaps with ExamArena.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons (Lucide or FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="mesh-background"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fa-solid fa-bolt text-blue"></i>
+                <span>ExamArena</span>
+            </div>
+            
+            <div class="nav-tabs">
+                <button class="tab-btn active" data-volume="all">All</button>
+                <button class="tab-btn vol-1" data-volume="1">Vol.1 ⚙️</button>
+                <button class="tab-btn vol-2" data-volume="2">Vol.2 🏛️</button>
+                <button class="tab-btn vol-3" data-volume="3">Vol.3 🏗️</button>
+                <button class="tab-btn vol-4" data-volume="4">Vol.4 🎓</button>
+                <button class="tab-btn vol-5" data-volume="5">Vol.5 🌍</button>
+                <button class="tab-btn vol-6" data-volume="6">Vol.6 🔬</button>
+            </div>
+
+            <div class="nav-actions">
+                <button id="searchToggle" title="Search"><i class="fa-solid fa-search"></i></button>
+                <button id="filterToggle" title="Filters"><i class="fa-solid fa-sliders"></i></button>
+                <button id="bookmarkToggle" title="Bookmarks"><i class="fa-solid fa-star"></i></button>
+                <button id="navCompareBtn" title="Compare" style="display: none;">Compare (<span id="compareCount">0</span>)</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero" id="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Unlock Your Next <span>Big Career Move</span></h1>
+            <p class="hero-subtitle">Your Complete Engineering Career Roadmap with 500+ Exams</p>
+            
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <i class="fa-solid fa-search search-icon"></i>
+                    <input type="text" id="mainSearch" placeholder="Search for GATE, ESE, SSC JE..." autocomplete="off">
+                </div>
+                <div id="searchSuggestions" class="search-suggestions"></div>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="statTotalExams">0</div>
+                    <div class="stat-label">Total Exams</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Volumes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">AI</div>
+                    <div class="stat-label">Real-time Insights</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Filters Panel (Slide in) -->
+        <aside class="filter-panel" id="filterPanel">
+            <div class="panel-header">
+                <h3>Advanced Filters</h3>
+                <button class="close-btn" id="closeFilters"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="panel-body">
+                <div class="filter-group">
+                    <label>Difficulty</label>
+                    <div class="difficulty-rating">
+                        <input type="radio" name="difficulty" id="diff5" value="5"><label for="diff5">★</label>
+                        <input type="radio" name="difficulty" id="diff4" value="4"><label for="diff4">★</label>
+                        <input type="radio" name="difficulty" id="diff3" value="3"><label for="diff3">★</label>
+                        <input type="radio" name="difficulty" id="diff2" value="2"><label for="diff2">★</label>
+                        <input type="radio" name="difficulty" id="diff1" value="1"><label for="diff1">★</label>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Category</label>
+                    <select id="categoryFilter" class="filter-select">
+                        <option value="">All Categories</option>
+                        <option value="technical">Technical</option>
+                        <option value="government">Government</option>
+                        <option value="state">State Level</option>
+                        <option value="higher_ed">Higher Education</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Education Level</label>
+                    <select id="filterEdu" class="filter-select">
+                        <option value="">Any</option>
+                        <option value="10th">10th</option>
+                        <option value="12th">12th</option>
+                        <option value="Diploma">Diploma</option>
+                        <option value="Graduation">Graduation</option>
+                        <option value="B.Tech">B.Tech</option>
+                        <option value="MBA">MBA</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Sector</label>
+                    <select id="filterSector" class="filter-select">
+                        <option value="">Any</option>
+                        <option value="Government">Government</option>
+                        <option value="Private">Private</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Location</label>
+                    <select id="filterLocation" class="filter-select">
+                        <option value="">Any</option>
+                        <option value="India">India</option>
+                        <option value="Abroad">Abroad</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Domain</label>
+                    <select id="filterDomain" class="filter-select">
+                        <option value="">Any</option>
+                        <option value="Technical">Technical</option>
+                        <option value="Non-Technical">Non-Technical</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Branch</label>
+                    <select id="filterBranch" class="filter-select">
+                        <option value="">Any</option>
+                        <option value="Mechanical">Mechanical</option>
+                        <option value="Civil">Civil</option>
+                        <option value="CSE">CSE</option>
+                        <option value="ECE">ECE</option>
+                        <option value="EE">EE</option>
+                    </select>
+                </div>
+
+                <div class="filter-group checkboxes-group">
+                    <label class="cb-label"><input type="checkbox" id="filterSalary"> Salary > ₹10 LPA</label>
+                    <label class="cb-label"><input type="checkbox" id="filterNoInt"> No Interview</label>
+                    <label class="cb-label"><input type="checkbox" id="filterWomen"> Women-only</label>
+                    <label class="cb-label"><input type="checkbox" id="filterFinalYear"> Final-year eligible</label>
+                    <label class="cb-label"><input type="checkbox" id="filterRemote"> Remote/Overseas</label>
+                </div>
+
+                <div class="filter-group">
+                    <label>Max Age: <span id="ageValText">Any</span></label>
+                    <input type="range" id="filterAge" min="18" max="45" value="45" class="range-slider">
+                </div>
+                
+                <div class="filter-actions mt-4">
+                    <button id="applyFiltersBtn" class="btn-primary w-full mb-2">Apply Filters</button>
+                    <button id="resetFiltersBtn" class="btn-secondary w-full">Reset Filters</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Exam Grid -->
+        <section class="exam-grid-container">
+            <div class="grid-header">
+                <h2 id="gridTitle">All Exams</h2>
+                <div class="grid-actions">
+                    <span id="resultsCount">0 results</span>
+                </div>
+            </div>
+            
+            <div class="exam-grid" id="examGrid">
+                <!-- Cards will be injected here via JS -->
+            </div>
+            
+            <div class="load-more-container">
+                <button id="loadMoreBtn" class="btn-secondary" style="display: none;">Load More</button>
+            </div>
+        </section>
+
+        <!-- Career Roadmap SVG -->
+        <section class="roadmap-section" id="roadmapSection">
+            <h2>Career Roadmap</h2>
+            <div class="roadmap-container" id="roadmapContainer">
+                <svg width="100%" height="400" viewBox="0 0 1000 400" preserveAspectRatio="xMidYMid meet">
+                    <g class="nodes">
+                        <!-- Simplified flow -->
+                        <rect x="50" y="150" width="120" height="60" rx="8" fill="var(--glass)" stroke="var(--blue)"/>
+                        <text x="110" y="185" text-anchor="middle" fill="white" font-family="Inter">B.Tech / BE</text>
+                        
+                        <path d="M 170 180 L 250 180" stroke="var(--text-secondary)" stroke-width="2" marker-end="url(#arrow)"/>
+                        
+                        <rect x="250" y="80" width="120" height="60" rx="8" fill="var(--glass)" stroke="var(--vol1)"/>
+                        <text x="310" y="115" text-anchor="middle" fill="white" font-family="Inter">GATE / ESE</text>
+                        
+                        <rect x="250" y="220" width="120" height="60" rx="8" fill="var(--glass)" stroke="var(--vol2)"/>
+                        <text x="310" y="255" text-anchor="middle" fill="white" font-family="Inter">SSC JE / RRB</text>
+                        
+                        <!-- More nodes can be added via JS or statically -->
+                    </g>
+                    <defs>
+                        <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--text-secondary)" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+        </section>
+    </main>
+
+    <!-- Exam Detail Panel (Drawer) -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <aside class="exam-drawer" id="examDrawer">
+        <div class="drawer-header">
+            <div class="drawer-title-group">
+                <div class="volume-badge" id="detailVolumeBadge">Vol.1</div>
+                <h2 id="detailAcronym">GATE</h2>
+                <button class="btn-icon" id="detailBookmarkBtn"><i class="fa-regular fa-star"></i></button>
+                <button class="btn-icon" id="closeDrawer"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p id="detailName">Graduate Aptitude Test in Engineering</p>
+            <div class="drawer-tabs">
+                <button class="d-tab active" data-target="tab-overview">Overview</button>
+                <button class="d-tab" data-target="tab-eligibility">Eligibility</button>
+                <button class="d-tab" data-target="tab-syllabus">Syllabus</button>
+                <button class="d-tab" data-target="tab-pattern">Pattern</button>
+                <button class="d-tab" data-target="tab-career">Career & Salary</button>
+                <button class="d-tab" data-target="tab-resources">Resources</button>
+                <button class="d-tab highlight-tab" data-target="tab-realtime">Real-Time Insights ⚡</button>
+            </div>
+        </div>
+        <div class="drawer-content">
+            <!-- Overview Tab -->
+            <div class="tab-pane active" id="tab-overview">
+                <div class="detail-grid">
+                    <div class="detail-card">
+                        <i class="fa-solid fa-building"></i>
+                        <h4>Conducting Body</h4>
+                        <p id="detBody">-</p>
+                    </div>
+                    <div class="detail-card">
+                        <i class="fa-solid fa-star"></i>
+                        <h4>Difficulty</h4>
+                        <p id="detDiff">-</p>
+                    </div>
+                    <div class="detail-card">
+                        <i class="fa-solid fa-calendar"></i>
+                        <h4>Validity</h4>
+                        <p id="detValid">-</p>
+                    </div>
+                </div>
+                <div class="benefits-section mt-4">
+                    <h3>Post Qualifying Benefits</h3>
+                    <ul id="detBenefits" class="styled-list"></ul>
+                </div>
+                <div class="mt-4 flex gap-2">
+                    <a href="#" id="detWebsite" target="_blank" class="btn-primary">Official Website <i class="fa-solid fa-external-link"></i></a>
+                    <button class="btn-secondary" id="detAiUpdate">Ask AI about this <i class="fa-solid fa-robot"></i></button>
+                </div>
+            </div>
+
+            <!-- Eligibility Tab -->
+            <div class="tab-pane" id="tab-eligibility">
+                <div class="eligibility-cards" id="detEligibility">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+            <!-- Syllabus Tab -->
+            <div class="tab-pane" id="tab-syllabus">
+                <div class="accordion" id="detSyllabus">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+            <!-- Pattern Tab -->
+            <div class="tab-pane" id="tab-pattern">
+                <div id="detPattern">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+
+            <!-- Career Tab -->
+            <div class="tab-pane" id="tab-career">
+                <div class="salary-card">
+                    <h3>Salary Range</h3>
+                    <div class="salary-amount" id="detSalaryRange">-</div>
+                    <p id="detSalaryDetails"></p>
+                </div>
+                <div class="career-progression mt-4" id="detProgression">
+                    <h3>Career Progression</h3>
+                    <div class="timeline"></div>
+                </div>
+            </div>
+
+            <!-- Resources Tab -->
+            <div class="tab-pane" id="tab-resources">
+                <ul class="resources-list" id="detResources">
+                    <!-- Injected via JS -->
+                </ul>
+            </div>
+
+            <!-- Real-Time Insights Tab -->
+            <div class="tab-pane" id="tab-realtime">
+                <div id="realtimeLoader" class="loader-container">
+                    <div class="spinner"></div>
+                    <p>Fetching real-time AI insights...</p>
+                </div>
+                <div id="realtimeContent" class="hidden">
+                    <div class="realtime-grid" id="detRealtimeGrid">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Compare Bar -->
+    <div class="compare-bar" id="compareBar">
+        <div class="compare-items" id="compareItems"></div>
+        <div class="compare-actions">
+            <button class="btn-primary" id="compareNowBtn">Compare Now</button>
+            <button class="btn-icon" id="clearCompareBtn"><i class="fa-solid fa-trash"></i></button>
+        </div>
+    </div>
+
+    <!-- Compare Modal -->
+    <div class="modal-overlay" id="compareModal">
+        <div class="modal-content full-screen">
+            <div class="modal-header">
+                <h2>Exam Comparison</h2>
+                <button class="btn-icon close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body overflow-auto">
+                <table class="compare-table" id="compareTable">
+                    <!-- Injected via JS -->
+                </table>
+                <div class="mt-4 text-center">
+                    <button class="btn-primary" id="aiCompareBtn"><i class="fa-solid fa-robot"></i> Get AI Analysis</button>
+                </div>
+                <div id="aiCompareResult" class="ai-response-box mt-4 hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Assistant -->
+    <button class="ai-chat-fab" id="aiChatFab">
+        <i class="fa-solid fa-robot"></i>
+    </button>
+    
+    <div class="ai-chat-panel" id="aiChatPanel">
+        <div class="chat-header">
+            <div>
+                <h3>ExamArena AI</h3>
+                <span class="chat-context" id="chatContext">General Assistant</span>
+            </div>
+            <button class="btn-icon" id="closeChatBtn"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-message">
+                <div class="msg-bubble">Hi! I'm your ExamArena AI assistant. How can I help with your engineering career today?</div>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <div class="chat-quick-actions">
+                <button class="quick-action-btn">Get Roadmap</button>
+                <button class="quick-action-btn">Suggest Exams</button>
+            </div>
+            <form id="chatForm">
+                <input type="text" id="chatInput" placeholder="Ask anything..." autocomplete="off">
+                <button type="submit" class="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Template for Exam Card -->
+    <template id="examCardTemplate">
+        <div class="exam-card">
+            <div class="card-header">
+                <span class="volume-badge"></span>
+                <span class="difficulty-stars"></span>
+                <button class="bookmark-btn"><i class="fa-regular fa-star"></i></button>
+            </div>
+            <div class="card-body">
+                <h3 class="acronym"></h3>
+                <p class="exam-name"></p>
+                <p class="conducting-body"></p>
+                <div class="quick-stats">
+                    <span class="salary-stat"><i class="fa-solid fa-money-bill-wave"></i> <span class="val"></span></span>
+                    <span class="validity-stat"><i class="fa-solid fa-calendar"></i> <span class="val"></span></span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="view-btn">View Details &rarr;</button>
+                <label class="compare-checkbox">
+                    <input type="checkbox" class="compare-cb"> Compare
+                </label>
+            </div>
+        </div>
+    </template>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
