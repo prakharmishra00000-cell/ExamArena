@@ -37,7 +37,7 @@ router.post('/ask', async (req, res) => {
       return res.status(503).json({ error: 'AI service not configured. Set GEMINI_API_KEY environment variable.' });
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     let prompt = SYSTEM_CONTEXT + '\n\n';
     
@@ -91,7 +91,7 @@ router.post('/compare', async (req, res) => {
       return res.status(404).json({ error: 'One or more exams not found' });
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const prompt = `${SYSTEM_CONTEXT}
 
 Compare these ${exams.length} exams in detail:
@@ -136,7 +136,7 @@ router.post('/realtime/:id', async (req, res) => {
     }
 
     const model = genAI.getGenerativeModel({ 
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.5-flash',
       generationConfig: { responseMimeType: 'application/json' }
     });
     const prompt = `${SYSTEM_CONTEXT}
@@ -211,7 +211,7 @@ router.post('/roadmap', async (req, res) => {
       return res.status(503).json({ error: 'AI service not configured' });
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const prompt = `${SYSTEM_CONTEXT}
 
 Create a detailed career roadmap for:
