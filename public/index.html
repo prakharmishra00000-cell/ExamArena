@@ -96,62 +96,74 @@
     </header>
 
     <main class="main-content">
-        <!-- Filters Panel (Slide in) -->
-        <aside class="filter-panel" id="filterPanel">
-            <div class="panel-header">
-                <h3>Advanced Filters</h3>
-                <button class="close-btn" id="closeFilters"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="panel-body">
-                <div class="filter-group">
-                    <label>Difficulty</label>
-                    <div class="difficulty-rating">
-                        <input type="radio" name="difficulty" id="diff5" value="5"><label for="diff5">★</label>
-                        <input type="radio" name="difficulty" id="diff4" value="4"><label for="diff4">★</label>
-                        <input type="radio" name="difficulty" id="diff3" value="3"><label for="diff3">★</label>
-                        <input type="radio" name="difficulty" id="diff2" value="2"><label for="diff2">★</label>
-                        <input type="radio" name="difficulty" id="diff1" value="1"><label for="diff1">★</label>
-                    </div>
+        <!-- Permanent Category Sidebar + Main Content Layout -->
+        <div class="content-layout">
+            <!-- Left Category Sidebar -->
+            <aside class="sidebar-category" id="sidebarCategory">
+                <div class="sidebar-header">
+                    <i class="fa-solid fa-list-check text-blue"></i>
+                    <span>Categories</span>
                 </div>
-                
-                <div class="filter-group">
-                    <label>Category</label>
-                    <select id="categoryFilter" class="filter-select">
-                        <option value="">All Categories</option>
-                        <option value="PSU Recruitment">PSU Recruitment</option>
-                        <option value="Maharatna PSU">Maharatna PSUs</option>
-                        <option value="Civil Services / Defence">Civil Services & Defence</option>
-                        <option value="Staff Selection">Staff Selection (SSC)</option>
-                        <option value="Railways">Railways (RRB)</option>
-                        <option value="Banking">Banking (IBPS/SBI/RBI)</option>
-                        <option value="Insurance">Insurance (LIC/NIACL)</option>
-                        <option value="State AE/JE">State AE / JE Exams</option>
-                        <option value="MBA Entrances - India">MBA Entrances (CAT/XAT/SNAP)</option>
-                        <option value="International MBA">International MBA (GMAT/GRE)</option>
-                        <option value="M.Tech/MS Admissions">M.Tech / MS Admissions</option>
-                        <option value="Research Fellowships">Research Fellowships & PhD (CSIR/PMRF)</option>
-                        <option value="US Engineering Licensure">US Engineering Licensure (FE/PE)</option>
-                        <option value="Canada Engineering Licensure">Canada Engineering (PEng)</option>
-                        <option value="UK Engineering Licensure">UK Engineering (CEng)</option>
-                        <option value="Australia Engineering Licensure">Australia Engineering (CPEng)</option>
-                        <option value="Professional Certifications">Professional Certifications (PMP/Six Sigma)</option>
-                        <option value="Defence">Defence Entries (NDA/CDS/AFCAT)</option>
-                        <option value="International Scholarships">International Scholarships (Fulbright/DAAD)</option>
-                    </select>
-                </div>
+                <ul class="category-menu" id="categoryMenu">
+                    <li class="cat-item active" data-cat=""><i class="fa-solid fa-layer-group text-blue"></i> All Categories</li>
+                    <li class="cat-item" data-cat="PSU Recruitment"><i class="fa-solid fa-building text-purple"></i> PSU Recruitment</li>
+                    <li class="cat-item" data-cat="Maharatna PSU"><i class="fa-solid fa-crown text-amber"></i> Maharatna PSUs</li>
+                    <li class="cat-item" data-cat="Civil Services / Defence"><i class="fa-solid fa-shield-halved text-red"></i> Civil Services & Defence</li>
+                    <li class="cat-item" data-cat="Staff Selection"><i class="fa-solid fa-clipboard-check text-cyan"></i> Staff Selection (SSC)</li>
+                    <li class="cat-item" data-cat="Railways"><i class="fa-solid fa-train text-orange"></i> Railways (RRB)</li>
+                    <li class="cat-item" data-cat="Banking"><i class="fa-solid fa-building-columns text-green"></i> Banking (IBPS/SBI/RBI)</li>
+                    <li class="cat-item" data-cat="Insurance"><i class="fa-solid fa-hospital-user text-pink"></i> Insurance (LIC/NIACL)</li>
+                    <li class="cat-item" data-cat="State AE/JE"><i class="fa-solid fa-map-location-dot text-blue"></i> State AE & JE Exams</li>
+                    <li class="cat-item" data-cat="MBA Entrances - India"><i class="fa-solid fa-graduation-cap text-purple"></i> MBA Entrances (CAT)</li>
+                    <li class="cat-item" data-cat="International MBA"><i class="fa-solid fa-globe text-cyan"></i> International MBA (GMAT)</li>
+                    <li class="cat-item" data-cat="M.Tech/MS Admissions"><i class="fa-solid fa-microscope text-amber"></i> M.Tech & MS Admissions</li>
+                    <li class="cat-item" data-cat="Research Fellowships"><i class="fa-solid fa-atom text-green"></i> Research & PhD (CSIR/PMRF)</li>
+                    <li class="cat-item" data-cat="US Engineering Licensure"><i class="fa-solid fa-award text-red"></i> US Licensure (FE/PE)</li>
+                    <li class="cat-item" data-cat="Canada Engineering Licensure"><i class="fa-solid fa-passport text-blue"></i> Canada PEng & NPPE</li>
+                    <li class="cat-item" data-cat="UK Engineering Licensure"><i class="fa-solid fa-certificate text-purple"></i> UK CEng Chartered</li>
+                    <li class="cat-item" data-cat="Australia Engineering Licensure"><i class="fa-solid fa-compass text-green"></i> Australia CPEng</li>
+                    <li class="cat-item" data-cat="Defence"><i class="fa-solid fa-jet-fighter text-red"></i> Defence (NDA/CDS/AFCAT)</li>
+                    <li class="cat-item" data-cat="International Scholarships"><i class="fa-solid fa-user-graduate text-amber"></i> Scholarships (Fulbright/DAAD)</li>
+                </ul>
+            </aside>
 
-                <div class="filter-group">
-                    <label>Education Level</label>
-                    <select id="filterEdu" class="filter-select">
-                        <option value="">Any</option>
-                        <option value="10th">10th</option>
-                        <option value="12th">12th</option>
-                        <option value="Diploma">Diploma</option>
-                        <option value="Graduation">Graduation</option>
-                        <option value="B.Tech">B.Tech</option>
-                        <option value="MBA">MBA</option>
-                    </select>
+            <!-- Filters Panel (Slide in for Advanced Options) -->
+            <aside class="filter-panel" id="filterPanel">
+                <div class="panel-header">
+                    <h3>Advanced Filters</h3>
+                    <button class="close-btn" id="closeFilters"><i class="fa-solid fa-xmark"></i></button>
                 </div>
+                <div class="panel-body">
+                    <div class="filter-group">
+                        <label>Difficulty</label>
+                        <div class="difficulty-rating">
+                            <input type="radio" name="difficulty" id="diff5" value="5"><label for="diff5">★</label>
+                            <input type="radio" name="difficulty" id="diff4" value="4"><label for="diff4">★</label>
+                            <input type="radio" name="difficulty" id="diff3" value="3"><label for="diff3">★</label>
+                            <input type="radio" name="difficulty" id="diff2" value="2"><label for="diff2">★</label>
+                            <input type="radio" name="difficulty" id="diff1" value="1"><label for="diff1">★</label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Category</label>
+                        <select id="categoryFilter" class="filter-select">
+                            <option value="">All Categories</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Education Level</label>
+                        <select id="filterEdu" class="filter-select">
+                            <option value="">Any</option>
+                            <option value="10th">10th</option>
+                            <option value="12th">12th</option>
+                            <option value="Diploma">Diploma</option>
+                            <option value="Graduation">Graduation</option>
+                            <option value="B.Tech">B.Tech</option>
+                            <option value="MBA">MBA</option>
+                        </select>
+                    </div>
 
                 <div class="filter-group">
                     <label>Sector</label>
@@ -229,6 +241,7 @@
                 <button id="loadMoreBtn" class="btn-secondary" style="display: none;">Load More</button>
             </div>
         </section>
+        </div>
 
         <!-- Career Roadmap SVG -->
         <section class="roadmap-section" id="roadmapSection">

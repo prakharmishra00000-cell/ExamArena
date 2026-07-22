@@ -46,6 +46,9 @@ function initElements() {
         resetFiltersBtn: document.getElementById('resetFiltersBtn'),
         categoryFilter: document.getElementById('categoryFilter'),
         
+        // Category Sidebar
+        catItems: document.querySelectorAll('.category-menu .cat-item'),
+        
         // Advanced filters
         filterEdu: document.getElementById('filterEdu'),
         filterSector: document.getElementById('filterSector'),
@@ -87,6 +90,8 @@ function initElements() {
         compareNowBtn: document.getElementById('compareNowBtn'),
         compareModal: document.getElementById('compareModal'),
         compareTable: document.getElementById('compareTable'),
+        aiCompareBtn: document.getElementById('aiCompareBtn'),
+        aiCompareResult: document.getElementById('aiCompareResult'),
         
         // AI Chat
         aiChatFab: document.getElementById('aiChatFab'),
@@ -117,6 +122,20 @@ function setupEventListeners() {
             fetchExams();
         });
     });
+
+    // Left Category Sidebar Click Event Listeners
+    if (elements.catItems) {
+        elements.catItems.forEach(item => {
+            item.addEventListener('click', () => {
+                elements.catItems.forEach(ci => ci.classList.remove('active'));
+                item.classList.add('active');
+                state.filters.category = item.dataset.cat || '';
+                if (elements.categoryFilter) elements.categoryFilter.value = state.filters.category;
+                state.currentPage = 1;
+                fetchExams();
+            });
+        });
+    }
 
     // Search Input
     let debounceTimer;
@@ -153,6 +172,14 @@ function setupEventListeners() {
         const diffInput = document.querySelector('input[name="difficulty"]:checked');
         state.filters.difficulty = diffInput ? diffInput.value : null;
         state.filters.category = elements.categoryFilter.value;
+        
+        // Sync category sidebar active state
+        if (elements.catItems) {
+            elements.catItems.forEach(ci => {
+                ci.classList.toggle('active', ci.dataset.cat === state.filters.category);
+            });
+        }
+
         state.filters.edu = elements.filterEdu ? elements.filterEdu.value : '';
         state.filters.sector = elements.filterSector ? elements.filterSector.value : '';
         state.filters.location = elements.filterLocation ? elements.filterLocation.value : '';
@@ -173,6 +200,9 @@ function setupEventListeners() {
     elements.resetFiltersBtn.addEventListener('click', () => {
         document.querySelectorAll('input[name="difficulty"]').forEach(r => r.checked = false);
         if (elements.categoryFilter) elements.categoryFilter.value = '';
+        if (elements.catItems) {
+            elements.catItems.forEach(ci => ci.classList.toggle('active', ci.dataset.cat === ''));
+        }
         if (elements.filterEdu) elements.filterEdu.value = '';
         if (elements.filterSector) elements.filterSector.value = '';
         if (elements.filterLocation) elements.filterLocation.value = '';
@@ -205,6 +235,17 @@ function setupEventListeners() {
         closeDrawer();
         elements.compareModal.classList.remove('show');
     });
+
+    // Drawer Accordion Delegation
+    const detSyllabus = document.getElementById('detSyllabus');
+    if (detSyllabus) {
+        detSyllabus.addEventListener('click', (e) => {
+            const header = e.target.closest('.accordion-header');
+            if (header) {
+                header.parentElement.classList.toggle('open');
+            }
+        });
+    }
 
     // Drawer Tabs
     elements.dTabs.forEach(tab => {
@@ -251,10 +292,28 @@ function setupEventListeners() {
     const modalClose = document.querySelector('.close-modal');
     if (modalClose) modalClose.addEventListener('click', () => elements.compareModal.classList.remove('show'));
     
+    // AI Compare Button
+    if (elements.aiCompareBtn) {
+        elements.aiCompareBtn.addEventListener('click', handleAICompare);
+    }
+
     // AI Chat
     elements.aiChatFab.addEventListener('click', () => elements.aiChatPanel.classList.add('open'));
     elements.closeChatBtn.addEventListener('click', () => elements.aiChatPanel.classList.remove('open'));
     elements.chatForm.addEventListener('submit', handleChatSubmit);
+
+    // AI Chat Quick Actions
+    document.querySelectorAll('.quick-action-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const text = btn.textContent.trim();
+            if (text.includes('Roadmap')) {
+                elements.chatInput.value = "Generate a complete engineering career roadmap for GATE and PSUs.";
+            } else {
+                elements.chatInput.value = "Suggest top high-salary engineering exams for Mechanical/Civil/EE.";
+            }
+            handleChatSubmit(new Event('submit'));
+        });
+    });
 }
 
 // Real Backend API Calls
@@ -351,7 +410,7 @@ async function fetchExams(append = false) {
         state.totalPages = data.totalPages || 1;
 
         if (!append) {
-            elements.gridTitle.textContent = state.filters.volume === 'all' ? "All Exams" : `Volume ${state.filters.volume} Exams`;
+            elements.gridTitle.textContent = state.filters.category ? `${state.filters.category} Exams` : (state.filters.volume === 'all' ? "All Exams" : `Volume ${state.filters.volume} Exams`);
         }
         elements.resultsCount.textContent = `${data.total || filtered.length} results`;
         
@@ -380,6 +439,7 @@ function renderCards(exams, append = false) {
         
         card.dataset.id = exam.id;
         card.style.setProperty('--vol1', `var(--vol${exam.volume})`);
+        card.style.cursor = 'pointer';
         
         const badge = clone.querySelector('.volume-badge');
         badge.textContent = `Vol.${exam.volume}`;
@@ -394,7 +454,7 @@ function renderCards(exams, append = false) {
         if (stats[0]) stats[0].textContent = exam.salary?.range || 'Govt Pay Scale';
         if (stats[1]) stats[1].textContent = exam.validity || 'Standard';
         
-        // Bookmark
+        // Bookmark button
         const bmBtn = clone.querySelector('.bookmark-btn');
         if (state.bookmarks.includes(exam.id)) bmBtn.classList.add('active');
         bmBtn.addEventListener('click', (e) => {
@@ -402,7 +462,7 @@ function renderCards(exams, append = false) {
             toggleBookmark(exam.id, bmBtn);
         });
         
-        // Compare
+        // Compare checkbox
         const compareCb = clone.querySelector('.compare-cb');
         if (state.compareSet.has(exam.id)) compareCb.checked = true;
         compareCb.addEventListener('change', (e) => {
@@ -420,8 +480,17 @@ function renderCards(exams, append = false) {
             updateCompareBar();
         });
         
-        // View Details
-        clone.querySelector('.view-btn').addEventListener('click', () => openExamDetail(exam.id));
+        // View Details - Click on card body OR view button
+        const viewBtn = clone.querySelector('.view-btn');
+        viewBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openExamDetail(exam.id);
+        });
+
+        const cardBody = clone.querySelector('.card-body');
+        if (cardBody) {
+            cardBody.addEventListener('click', () => openExamDetail(exam.id));
+        }
         
         card.style.opacity = '0';
         card.style.transform = 'translateY(20px)';
@@ -446,17 +515,21 @@ async function openExamDetail(id) {
     
     let exam = state.exams.find(e => e.id === id);
     
-    // Fetch full single exam object from backend API if needed
+    // Attempt single exam API lookup with graceful fallback
     try {
-        const res = await fetch(`/api/exams/${id}`);
+        const res = await fetch(`/api/exams/${encodeURIComponent(id)}`);
         if (res.ok) {
-            exam = await res.json();
+            const fetched = await res.json();
+            if (fetched && fetched.name) exam = fetched;
         }
     } catch (err) {
-        console.log('Using cached exam data');
+        console.log('Using local exam state object');
     }
 
-    if (!exam) return;
+    if (!exam) {
+        console.error('Exam not found:', id);
+        return;
+    }
     
     document.getElementById('detailVolumeBadge').textContent = `Vol.${exam.volume}`;
     document.getElementById('detailVolumeBadge').className = `volume-badge vol-${exam.volume}-badge`;
@@ -503,7 +576,7 @@ async function openExamDetail(id) {
         const topicArray = Array.isArray(topics) ? topics : [topics];
         return `
             <div class="accordion-item open">
-                <div class="accordion-header">
+                <div class="accordion-header" style="cursor: pointer;">
                     <h4>${section}</h4>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
@@ -530,7 +603,7 @@ async function openExamDetail(id) {
         </ul>
         <div class="mt-3">
             <h4>Negative Marking:</h4>
-            <p>${pattern.negativeMarking || 'Standard 1/3rd penalty for wrong answers'}</p>
+            <p>${pattern.negativeMarking || 'Standard penalty for wrong answers'}</p>
         </div>
         <div class="mt-3">
             <h4>Selection Process Steps:</h4>
@@ -602,7 +675,7 @@ async function loadRealtimeData(id) {
     elements.realtimeLoader.classList.remove('hidden');
     
     try {
-        const res = await fetch(`/api/ai/realtime/${id}`, { method: 'POST' });
+        const res = await fetch(`/api/ai/realtime/${encodeURIComponent(id)}`, { method: 'POST' });
         const data = await res.json();
         
         if (data.realtimeData) {
@@ -714,8 +787,36 @@ function openCompareModal() {
     `;
     
     elements.compareTable.innerHTML = `<thead>${thead}</thead><tbody>${tbody}</tbody>`;
+    if (elements.aiCompareResult) elements.aiCompareResult.classList.add('hidden');
     elements.drawerOverlay.classList.add('show');
     elements.compareModal.classList.add('show');
+}
+
+// Live AI Compare Integration
+async function handleAICompare() {
+    if (state.compareSet.size < 2) return;
+    if (!elements.aiCompareResult) return;
+
+    elements.aiCompareResult.innerHTML = '<div class="spinner"></div> Generating AI Comparison...';
+    elements.aiCompareResult.classList.remove('hidden');
+
+    try {
+        const res = await fetch('/api/ai/compare', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ examIds: Array.from(state.compareSet) })
+        });
+        const data = await res.json();
+        
+        if (data.comparison) {
+            elements.aiCompareResult.innerHTML = `<h4>🤖 Gemini AI Comparison Analysis:</h4><p style="white-space: pre-line;">${data.comparison}</p>`;
+        } else {
+            elements.aiCompareResult.innerHTML = `<p>Unable to generate comparison right now.</p>`;
+        }
+    } catch (err) {
+        console.error('AI Compare error:', err);
+        elements.aiCompareResult.innerHTML = `<p>Failed to generate AI comparison.</p>`;
+    }
 }
 
 // Live AI Assistant Chatbot
@@ -758,7 +859,6 @@ async function handleChatSubmit(e) {
 function appendMessage(text, className) {
     const div = document.createElement('div');
     div.className = `message ${className}`;
-    // Simple markdown line-break formatting
     const formatted = text.replace(/\n/g, '<br>');
     div.innerHTML = `<div class="msg-bubble">${formatted}</div>`;
     elements.chatMessages.appendChild(div);
