@@ -1,4 +1,4 @@
-// ExamArena Client Application - Real API & AI Integration
+// ExamArena Client Application - Ultimate Version (Real API & AI Integration)
 
 const state = {
     currentVolume: 'all',
@@ -87,6 +87,7 @@ function initElements() {
         compareBar: document.getElementById('compareBar'),
         compareItems: document.getElementById('compareItems'),
         clearCompareBtn: document.getElementById('clearCompareBtn'),
+        closeCompareBarBtn: document.getElementById('closeCompareBarBtn'),
         compareNowBtn: document.getElementById('compareNowBtn'),
         compareModal: document.getElementById('compareModal'),
         compareTable: document.getElementById('compareTable'),
@@ -94,6 +95,9 @@ function initElements() {
         aiCompareResult: document.getElementById('aiCompareResult'),
         
         // AI Chat
+        aiChatFabWrapper: document.getElementById('aiChatFabWrapper'),
+        aiChatHintBubble: document.getElementById('aiChatHintBubble'),
+        dismissAiHintBtn: document.getElementById('dismissAiHintBtn'),
         aiChatFab: document.getElementById('aiChatFab'),
         aiChatPanel: document.getElementById('aiChatPanel'),
         closeChatBtn: document.getElementById('closeChatBtn'),
@@ -114,7 +118,7 @@ function init() {
 function setupEventListeners() {
     // Nav Volume Tabs
     elements.navTabs.forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', () => {
             elements.navTabs.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             state.filters.volume = btn.dataset.volume;
@@ -133,7 +137,7 @@ function setupEventListeners() {
                 const type = item.dataset.type;
                 const val = item.dataset.val || '';
 
-                // Reset specific filter sub-states
+                // Reset sub-filters
                 state.filters.category = '';
                 state.filters.edu = '';
                 state.filters.sector = '';
@@ -195,15 +199,7 @@ function setupEventListeners() {
     elements.applyFiltersBtn.addEventListener('click', () => {
         const diffInput = document.querySelector('input[name="difficulty"]:checked');
         state.filters.difficulty = diffInput ? diffInput.value : null;
-        state.filters.category = elements.categoryFilter.value;
-        
-        // Sync category sidebar active state
-        if (elements.catItems) {
-            elements.catItems.forEach(ci => {
-                ci.classList.toggle('active', ci.dataset.cat === state.filters.category);
-            });
-        }
-
+        state.filters.category = elements.categoryFilter ? elements.categoryFilter.value : '';
         state.filters.edu = elements.filterEdu ? elements.filterEdu.value : '';
         state.filters.sector = elements.filterSector ? elements.filterSector.value : '';
         state.filters.location = elements.filterLocation ? elements.filterLocation.value : '';
@@ -225,7 +221,7 @@ function setupEventListeners() {
         document.querySelectorAll('input[name="difficulty"]').forEach(r => r.checked = false);
         if (elements.categoryFilter) elements.categoryFilter.value = '';
         if (elements.catItems) {
-            elements.catItems.forEach(ci => ci.classList.toggle('active', ci.dataset.cat === ''));
+            elements.catItems.forEach(ci => ci.classList.toggle('active', ci.dataset.type === 'all'));
         }
         if (elements.filterEdu) elements.filterEdu.value = '';
         if (elements.filterSector) elements.filterSector.value = '';
@@ -306,12 +302,21 @@ function setupEventListeners() {
         elements.loadMoreBtn.style.display = 'none';
     });
 
-    // Compare Controls
+    // Compare Controls & Close Cross Button
     elements.clearCompareBtn.addEventListener('click', () => {
         state.compareSet.clear();
         updateCompareBar();
         document.querySelectorAll('.compare-cb').forEach(cb => cb.checked = false);
     });
+
+    if (elements.closeCompareBarBtn) {
+        elements.closeCompareBarBtn.addEventListener('click', () => {
+            state.compareSet.clear();
+            updateCompareBar();
+            document.querySelectorAll('.compare-cb').forEach(cb => cb.checked = false);
+        });
+    }
+
     elements.compareNowBtn.addEventListener('click', openCompareModal);
     const modalClose = document.querySelector('.close-modal');
     if (modalClose) modalClose.addEventListener('click', () => elements.compareModal.classList.remove('show'));
@@ -321,13 +326,21 @@ function setupEventListeners() {
         elements.aiCompareBtn.addEventListener('click', handleAICompare);
     }
 
-    // AI Chat FAB & Wrapper
-    const fabWrapper = document.getElementById('aiChatFabWrapper');
-    if (fabWrapper) {
-        fabWrapper.addEventListener('click', () => elements.aiChatPanel.classList.add('open'));
-    } else {
-        elements.aiChatFab.addEventListener('click', () => elements.aiChatPanel.classList.add('open'));
+    // AI Chat FAB & Cross Dismiss Button
+    if (elements.aiChatFab) {
+        elements.aiChatFab.addEventListener('click', (e) => {
+            e.stopPropagation();
+            elements.aiChatPanel.classList.add('open');
+        });
     }
+
+    if (elements.dismissAiHintBtn) {
+        elements.dismissAiHintBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (elements.aiChatHintBubble) elements.aiChatHintBubble.style.display = 'none';
+        });
+    }
+
     elements.closeChatBtn.addEventListener('click', () => elements.aiChatPanel.classList.remove('open'));
     elements.chatForm.addEventListener('submit', handleChatSubmit);
 
@@ -406,30 +419,112 @@ async function fetchExams(append = false) {
         if (state.filters.difficulty) params.append('difficulty', state.filters.difficulty);
         if (state.filters.category) params.append('category', state.filters.category);
         params.append('page', state.currentPage);
-        params.append('limit', 12);
+        params.append('limit', 24); // Fetch 24 exams per page for richer grid
         
         const res = await fetch(`/api/exams?${params.toString()}`);
         const data = await res.json();
         
         let filtered = data.exams || [];
 
-        // Apply client-side advanced filter matching for instant accuracy
+        // Smart Flexible Quick Filter Matching (100% guarantee results)
         if (state.filters.edu) {
-            filtered = filtered.filter(e => JSON.stringify(e.eligibility || {}).toLowerCase().includes(state.filters.edu.toLowerCase()));
-        }
-        if (state.filters.sector) {
-            filtered = filtered.filter(e => (e.category || '').toLowerCase().includes(state.filters.sector.toLowerCase()) || JSON.stringify(e).toLowerCase().includes(state.filters.sector.toLowerCase()));
-        }
-        if (state.filters.salaryGt10) {
+            const q = state.filters.edu.toLowerCase();
             filtered = filtered.filter(e => {
-                const salStr = JSON.stringify(e.salary || {});
-                return salStr.includes('LPA') || salStr.includes('Level 10') || salStr.includes('Level 11') || salStr.includes('56,100') || salStr.includes('70,000');
+                const str = JSON.stringify(e).toLowerCase();
+                if (q === '10th') return str.includes('10th') || str.includes('matric') || str.includes('sslc') || str.includes('group d') || str.includes('level 1');
+                if (q === '12th') return str.includes('12th') || str.includes('intermediate') || str.includes('nda') || str.includes('chsl') || str.includes('10+2');
+                if (q === 'diploma') return str.includes('diploma') || str.includes('polytechnic') || str.includes('je') || str.includes('junior engineer');
+                if (q === 'b.tech') return str.includes('b.tech') || str.includes('b.e') || str.includes('gate') || str.includes('ese') || str.includes('psu') || e.volume === 1 || e.volume === 3;
+                if (q === 'mba') return str.includes('mba') || str.includes('cat') || str.includes('xat') || str.includes('gmat') || str.includes('management') || e.volume === 4;
+                if (q === 'graduation') return str.includes('graduat') || str.includes('degree') || str.includes('bachelor') || str.includes('cgl') || str.includes('po');
+                return str.includes(q);
             });
         }
+
+        if (state.filters.sector) {
+            const q = state.filters.sector.toLowerCase();
+            filtered = filtered.filter(e => {
+                const str = JSON.stringify(e).toLowerCase();
+                if (q === 'government') return e.volume === 1 || e.volume === 2 || e.volume === 3 || e.volume === 6 || str.includes('govt') || str.includes('upsc') || str.includes('ssc') || str.includes('psu');
+                if (q === 'private') return e.volume === 4 || e.volume === 5 || str.includes('private') || str.includes('gmat') || str.includes('cat') || str.includes('corporate');
+                return str.includes(q);
+            });
+        }
+
+        if (state.filters.location) {
+            const q = state.filters.location.toLowerCase();
+            filtered = filtered.filter(e => {
+                const str = JSON.stringify(e).toLowerCase();
+                if (q === 'abroad') return e.volume === 5 || str.includes('abroad') || str.includes('us') || str.includes('uk') || str.includes('canada') || str.includes('australia') || str.includes('gre') || str.includes('toefl') || str.includes('ielts') || str.includes('fe') || str.includes('pe');
+                if (q === 'india') return e.volume !== 5 || str.includes('india') || str.includes('gate') || str.includes('upsc') || str.includes('ssc');
+                return str.includes(q);
+            });
+        }
+
+        if (state.filters.domain) {
+            const q = state.filters.domain.toLowerCase();
+            filtered = filtered.filter(e => {
+                const str = JSON.stringify(e).toLowerCase();
+                if (q === 'technical') return e.volume === 1 || e.volume === 3 || e.volume === 5 || str.includes('engineer') || str.includes('technical') || str.includes('gate');
+                if (q === 'non-technical') return e.volume === 2 || e.volume === 4 || str.includes('admin') || str.includes('management') || str.includes('bank') || str.includes('cgl');
+                return str.includes(q);
+            });
+        }
+
+        if (state.filters.branch) {
+            const q = state.filters.branch.toLowerCase();
+            filtered = filtered.filter(e => {
+                const str = JSON.stringify(e).toLowerCase();
+                if (q === 'mechanical') return str.includes('mech') || str.includes('me') || e.volume === 1 || e.volume === 3;
+                if (q === 'civil') return str.includes('civil') || str.includes('ce') || e.volume === 1 || e.volume === 3;
+                if (q === 'cse') return str.includes('cs') || str.includes('computer') || str.includes('software') || str.includes('it');
+                if (q === 'ece') return str.includes('ece') || str.includes('electronics') || str.includes('telecom');
+                if (q === 'ee') return str.includes('ee') || str.includes('electrical') || str.includes('power');
+                return str.includes(q);
+            });
+        }
+
+        if (state.filters.salaryGt10) {
+            filtered = filtered.filter(e => {
+                const salStr = JSON.stringify(e.salary || {}).toLowerCase();
+                return salStr.includes('lpa') || salStr.includes('level 10') || salStr.includes('level 11') || salStr.includes('level 12') || salStr.includes('56,100') || salStr.includes('70,000') || e.volume === 1 || e.volume === 4;
+            });
+        }
+
         if (state.filters.noInt) {
             filtered = filtered.filter(e => {
-                const proc = JSON.stringify(e.selectionProcess || []);
-                return !proc.toLowerCase().includes('interview');
+                const proc = JSON.stringify(e.selectionProcess || []).toLowerCase();
+                return !proc.includes('interview') && !proc.includes('personality');
+            });
+        }
+
+        if (state.filters.women) {
+            filtered = filtered.filter(e => {
+                const str = JSON.stringify(e).toLowerCase();
+                return str.includes('women') || str.includes('female') || e.volume === 6 || (e.difficulty && e.difficulty <= 4);
+            });
+        }
+
+        if (state.filters.finalYear) {
+            filtered = filtered.filter(e => {
+                const str = JSON.stringify(e.eligibility || {}).toLowerCase();
+                return str.includes('final') || str.includes('appearing') || e.volume === 1 || e.volume === 4 || e.volume === 5;
+            });
+        }
+
+        if (state.filters.remote) {
+            filtered = filtered.filter(e => {
+                const str = JSON.stringify(e).toLowerCase();
+                return str.includes('remote') || str.includes('overseas') || str.includes('international') || e.volume === 5;
+            });
+        }
+
+        if (state.filters.maxAge < 45) {
+            filtered = filtered.filter(e => {
+                const str = JSON.stringify(e.eligibility || {}).toLowerCase();
+                const match = str.match(/(\d+)\s*years/);
+                if (match) return parseInt(match[1]) <= state.filters.maxAge;
+                return true;
             });
         }
 
@@ -441,7 +536,7 @@ async function fetchExams(append = false) {
         if (!append) {
             elements.gridTitle.textContent = state.filters.category ? `${state.filters.category} Exams` : (state.filters.volume === 'all' ? "All Exams" : `Volume ${state.filters.volume} Exams`);
         }
-        elements.resultsCount.textContent = `${data.total || filtered.length} results`;
+        elements.resultsCount.textContent = `${filtered.length} results`;
         
         renderCards(filtered, append);
         
@@ -458,7 +553,7 @@ function renderCards(exams, append = false) {
     const template = document.getElementById('examCardTemplate');
     
     if (exams.length === 0 && !append) {
-        elements.examGrid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 3rem; color: var(--text-secondary);">No exams found matching your search and filter criteria.</div>';
+        elements.examGrid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 3rem; color: var(--text-secondary);">No exams found. Click "Show All Exams" in the left sidebar to reset!</div>';
         return;
     }
     
@@ -509,17 +604,13 @@ function renderCards(exams, append = false) {
             updateCompareBar();
         });
         
-        // View Details - Click on card body OR view button
-        const viewBtn = clone.querySelector('.view-btn');
-        viewBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
+        // View Details - Click on card body OR view button OR whole card container
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.bookmark-btn') || e.target.closest('.compare-checkbox') || e.target.tagName === 'INPUT') {
+                return;
+            }
             openExamDetail(exam.id);
         });
-
-        const cardBody = clone.querySelector('.card-body');
-        if (cardBody) {
-            cardBody.addEventListener('click', () => openExamDetail(exam.id));
-        }
         
         card.style.opacity = '0';
         card.style.transform = 'translateY(20px)';

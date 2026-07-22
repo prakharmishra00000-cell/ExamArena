@@ -964,6 +964,22 @@ a {
     gap: 0.5rem;
 }
 
+.hint-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-left: 0.4rem;
+    cursor: pointer;
+    padding: 0 4px;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+.hint-close-btn:hover {
+    color: var(--red);
+    background: rgba(239, 68, 68, 0.2);
+}
+
 @keyframes floatBounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-6px); }

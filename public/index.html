@@ -408,7 +408,8 @@
         <div class="compare-items" id="compareItems"></div>
         <div class="compare-actions">
             <button class="btn-primary" id="compareNowBtn">Compare Now</button>
-            <button class="btn-icon" id="clearCompareBtn"><i class="fa-solid fa-trash"></i></button>
+            <button class="btn-icon" id="clearCompareBtn" title="Clear Selections"><i class="fa-solid fa-trash"></i></button>
+            <button class="btn-icon" id="closeCompareBarBtn" title="Close Compare Bar"><i class="fa-solid fa-xmark"></i></button>
         </div>
     </div>
 
@@ -431,10 +432,13 @@
         </div>
     </div>
 
-    <!-- AI Chat Assistant Floating Trigger -->
+    <!-- AI Chat Assistant Floating Trigger with Dismiss Cross Button -->
     <div class="ai-chat-fab-wrapper" id="aiChatFabWrapper">
-        <div class="ai-chat-bubble-hint"><i class="fa-solid fa-sparkles text-amber"></i> Ask ExamArena AI...</div>
-        <button class="ai-chat-fab" id="aiChatFab">
+        <div class="ai-chat-bubble-hint" id="aiChatHintBubble">
+            <i class="fa-solid fa-sparkles text-amber"></i> Ask ExamArena AI...
+            <button class="hint-close-btn" id="dismissAiHintBtn" title="Dismiss Chatbot"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <button class="ai-chat-fab" id="aiChatFab" title="Open AI Assistant">
             <i class="fa-solid fa-robot"></i>
         </button>
     </div>
