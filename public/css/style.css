@@ -402,11 +402,13 @@ a {
     accent-color: var(--blue);
 }
 
-/* Content Layout with Left Category Sidebar */
+/* Full Width Content Layout without Sidebar */
 .content-layout {
-    display: flex;
-    gap: 2rem;
-    align-items: flex-start;
+    display: block;
+    width: 100%;
+}
+.grid-section {
+    width: 100%;
 }
 .sidebar-category {
     width: 280px;

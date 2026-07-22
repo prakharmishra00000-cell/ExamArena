@@ -96,174 +96,129 @@
     </header>
 
     <main class="main-content">
-        <!-- Permanent Category Sidebar + Main Content Layout -->
+        <!-- Main Content Layout (Full Width Grid) -->
         <div class="content-layout">
-            <!-- Left Category Sidebar with Exact Specified Filters -->
-            <aside class="sidebar-category" id="sidebarCategory">
-                <div class="sidebar-header">
-                    <i class="fa-solid fa-filter text-blue"></i>
-                    <span>Quick Filters</span>
-                </div>
-                <div class="category-group-label">ALL EXAMS</div>
-                <ul class="category-menu">
-                    <li class="cat-item active" data-type="all" data-val=""><i class="fa-solid fa-globe text-blue"></i> Show All Exams</li>
-                </ul>
-
-                <div class="category-group-label">EDUCATION LEVEL</div>
-                <ul class="category-menu">
-                    <li class="cat-item" data-type="edu" data-val="10th"><i class="fa-solid fa-book-open text-cyan"></i> 10th Pass</li>
-                    <li class="cat-item" data-type="edu" data-val="12th"><i class="fa-solid fa-graduation-cap text-purple"></i> 12th Pass</li>
-                    <li class="cat-item" data-type="edu" data-val="Diploma"><i class="fa-solid fa-certificate text-amber"></i> Diploma</li>
-                    <li class="cat-item" data-type="edu" data-val="Graduation"><i class="fa-solid fa-user-graduate text-green"></i> Graduation</li>
-                    <li class="cat-item" data-type="edu" data-val="B.Tech"><i class="fa-solid fa-microchip text-blue"></i> B.Tech / B.E.</li>
-                    <li class="cat-item" data-type="edu" data-val="MBA"><i class="fa-solid fa-briefcase text-pink"></i> MBA</li>
-                </ul>
-
-                <div class="category-group-label">SECTOR & LOCATION</div>
-                <ul class="category-menu">
-                    <li class="cat-item" data-type="sector" data-val="Government"><i class="fa-solid fa-landmark text-red"></i> Government</li>
-                    <li class="cat-item" data-type="sector" data-val="Private"><i class="fa-solid fa-building text-purple"></i> Private</li>
-                    <li class="cat-item" data-type="location" data-val="India"><i class="fa-solid fa-flag text-orange"></i> India</li>
-                    <li class="cat-item" data-type="location" data-val="Abroad"><i class="fa-solid fa-plane text-cyan"></i> Abroad / Overseas</li>
-                    <li class="cat-item" data-type="domain" data-val="Technical"><i class="fa-solid fa-gears text-blue"></i> Technical</li>
-                    <li class="cat-item" data-type="domain" data-val="Non-Technical"><i class="fa-solid fa-calculator text-amber"></i> Non-Technical</li>
-                </ul>
-
-                <div class="category-group-label">ENGINEERING BRANCH</div>
-                <ul class="category-menu">
-                    <li class="cat-item" data-type="branch" data-val="Mechanical"><i class="fa-solid fa-wrench text-blue"></i> Mechanical</li>
-                    <li class="cat-item" data-type="branch" data-val="Civil"><i class="fa-solid fa-trowel-bricks text-amber"></i> Civil</li>
-                    <li class="cat-item" data-type="branch" data-val="CSE"><i class="fa-solid fa-code text-cyan"></i> Computer Science (CSE)</li>
-                    <li class="cat-item" data-type="branch" data-val="ECE"><i class="fa-solid fa-satellite-dish text-purple"></i> Electronics (ECE)</li>
-                    <li class="cat-item" data-type="branch" data-val="EE"><i class="fa-solid fa-bolt text-yellow"></i> Electrical (EE)</li>
-                </ul>
-
-                <div class="category-group-label">FEATURE FILTERS</div>
-                <ul class="category-menu">
-                    <li class="cat-item" data-type="flag" data-val="salaryGt10"><i class="fa-solid fa-money-bill-wave text-green"></i> Salary > ₹10 LPA</li>
-                    <li class="cat-item" data-type="flag" data-val="noInt"><i class="fa-solid fa-user-check text-blue"></i> No Interview</li>
-                    <li class="cat-item" data-type="flag" data-val="women"><i class="fa-solid fa-venus text-pink"></i> Women-Only</li>
-                    <li class="cat-item" data-type="flag" data-val="finalYear"><i class="fa-solid fa-user-clock text-amber"></i> Final-Year Eligible</li>
-                    <li class="cat-item" data-type="age" data-val="25"><i class="fa-solid fa-calendar-check text-cyan"></i> Age ≤ 25 Years</li>
-                    <li class="cat-item" data-type="age" data-val="30"><i class="fa-solid fa-calendar-check text-purple"></i> Age ≤ 30 Years</li>
-                    <li class="cat-item" data-type="flag" data-val="remote"><i class="fa-solid fa-laptop-house text-green"></i> Remote / Overseas</li>
-                </ul>
-            </aside>
-
             <!-- Filters Panel (Slide in for Advanced Options) -->
             <aside class="filter-panel" id="filterPanel">
                 <div class="panel-header">
                     <h3>Advanced Filters</h3>
-                    <button class="close-btn" id="closeFilters"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="close-btn" id="closeFilters" title="Close Filters"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div class="panel-body">
                     <div class="filter-group">
-                        <label>Difficulty</label>
-                        <div class="difficulty-rating">
-                            <input type="radio" name="difficulty" id="diff5" value="5"><label for="diff5">★</label>
-                            <input type="radio" name="difficulty" id="diff4" value="4"><label for="diff4">★</label>
-                            <input type="radio" name="difficulty" id="diff3" value="3"><label for="diff3">★</label>
-                            <input type="radio" name="difficulty" id="diff2" value="2"><label for="diff2">★</label>
-                            <input type="radio" name="difficulty" id="diff1" value="1"><label for="diff1">★</label>
+                        <label>Difficulty Stars</label>
+                        <div class="star-rating">
+                            <input type="radio" name="difficulty" value="5" id="star5"><label for="star5">★</label>
+                            <input type="radio" name="difficulty" value="4" id="star4"><label for="star4">★</label>
+                            <input type="radio" name="difficulty" value="3" id="star3"><label for="star3">★</label>
+                            <input type="radio" name="difficulty" value="2" id="star2"><label for="star2">★</label>
+                            <input type="radio" name="difficulty" value="1" id="star1"><label for="star1">★</label>
                         </div>
                     </div>
                     
                     <div class="filter-group">
                         <label>Category</label>
-                        <select id="categoryFilter" class="filter-select">
+                        <select id="categoryFilter">
                             <option value="">All Categories</option>
                         </select>
                     </div>
 
                     <div class="filter-group">
-                        <label>Education Level</label>
-                        <select id="filterEdu" class="filter-select">
-                            <option value="">Any</option>
-                            <option value="10th">10th</option>
-                            <option value="12th">12th</option>
+                        <label>Education Qualification</label>
+                        <select id="filterEdu">
+                            <option value="">All Qualifications</option>
+                            <option value="10th">10th Pass</option>
+                            <option value="12th">12th Pass</option>
                             <option value="Diploma">Diploma</option>
                             <option value="Graduation">Graduation</option>
-                            <option value="B.Tech">B.Tech</option>
-                            <option value="MBA">MBA</option>
+                            <option value="B.Tech">B.Tech / B.E.</option>
+                            <option value="MBA">MBA / Management</option>
                         </select>
                     </div>
 
-                <div class="filter-group">
-                    <label>Sector</label>
-                    <select id="filterSector" class="filter-select">
-                        <option value="">Any</option>
-                        <option value="Government">Government</option>
-                        <option value="Private">Private</option>
-                    </select>
-                </div>
+                    <div class="filter-group">
+                        <label>Sector</label>
+                        <select id="filterSector">
+                            <option value="">All Sectors</option>
+                            <option value="Government">Government / PSU</option>
+                            <option value="Private">Private / Corporate</option>
+                        </select>
+                    </div>
 
-                <div class="filter-group">
-                    <label>Location</label>
-                    <select id="filterLocation" class="filter-select">
-                        <option value="">Any</option>
-                        <option value="India">India</option>
-                        <option value="Abroad">Abroad</option>
-                    </select>
-                </div>
+                    <div class="filter-group">
+                        <label>Location</label>
+                        <select id="filterLocation">
+                            <option value="">All Locations</option>
+                            <option value="India">India</option>
+                            <option value="Abroad">Abroad / Overseas</option>
+                        </select>
+                    </div>
 
-                <div class="filter-group">
-                    <label>Domain</label>
-                    <select id="filterDomain" class="filter-select">
-                        <option value="">Any</option>
-                        <option value="Technical">Technical</option>
-                        <option value="Non-Technical">Non-Technical</option>
-                    </select>
-                </div>
+                    <div class="filter-group">
+                        <label>Domain</label>
+                        <select id="filterDomain">
+                            <option value="">All Domains</option>
+                            <option value="Technical">Technical / Engineering</option>
+                            <option value="Non-Technical">Non-Technical / General</option>
+                        </select>
+                    </div>
 
-                <div class="filter-group">
-                    <label>Branch</label>
-                    <select id="filterBranch" class="filter-select">
-                        <option value="">Any</option>
-                        <option value="Mechanical">Mechanical</option>
-                        <option value="Civil">Civil</option>
-                        <option value="CSE">CSE</option>
-                        <option value="ECE">ECE</option>
-                        <option value="EE">EE</option>
-                    </select>
-                </div>
+                    <div class="filter-group">
+                        <label>Engineering Branch</label>
+                        <select id="filterBranch">
+                            <option value="">All Branches</option>
+                            <option value="Mechanical">Mechanical</option>
+                            <option value="Civil">Civil</option>
+                            <option value="CSE">Computer Science (CSE)</option>
+                            <option value="ECE">Electronics (ECE)</option>
+                            <option value="EE">Electrical (EE)</option>
+                        </select>
+                    </div>
 
-                <div class="filter-group checkboxes-group">
-                    <label class="cb-label"><input type="checkbox" id="filterSalary"> Salary > ₹10 LPA</label>
-                    <label class="cb-label"><input type="checkbox" id="filterNoInt"> No Interview</label>
-                    <label class="cb-label"><input type="checkbox" id="filterWomen"> Women-only</label>
-                    <label class="cb-label"><input type="checkbox" id="filterFinalYear"> Final-year eligible</label>
-                    <label class="cb-label"><input type="checkbox" id="filterRemote"> Remote/Overseas</label>
-                </div>
+                    <div class="filter-group">
+                        <label>Special Toggles</label>
+                        <div class="toggle-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <label><input type="checkbox" id="filterSalary"> Salary Above ₹10 LPA</label>
+                            <label><input type="checkbox" id="filterNoInt"> No Interview Required</label>
+                            <label><input type="checkbox" id="filterWomen"> Women-Only Opportunities</label>
+                            <label><input type="checkbox" id="filterFinalYear"> Final-Year Eligible</label>
+                            <label><input type="checkbox" id="filterRemote"> Remote / Overseas</label>
+                        </div>
+                    </div>
 
-                <div class="filter-group">
-                    <label>Max Age: <span id="ageValText">Any</span></label>
-                    <input type="range" id="filterAge" min="18" max="45" value="45" class="range-slider">
+                    <div class="filter-group">
+                        <label>Max Age Limit: <span id="ageValText">Any</span></label>
+                        <input type="range" id="filterAge" min="18" max="45" value="45">
+                    </div>
+
+                    <div class="panel-actions">
+                        <button class="btn-primary" id="applyFiltersBtn">Apply Filters</button>
+                        <button class="btn-secondary" id="resetFiltersBtn">Reset All</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Grid Area -->
+            <section class="grid-section">
+                <div class="section-header">
+                    <div>
+                        <h2 id="gridTitle">All Engineering & Govt Exams</h2>
+                        <span class="results-count" id="resultsCount">Loading exams...</span>
+                    </div>
+                    <div class="grid-actions">
+                        <button class="btn-icon" id="filterToggle" title="Advanced Filters"><i class="fa-solid fa-sliders"></i> Filters</button>
+                    </div>
                 </div>
                 
-                <div class="filter-actions mt-4">
-                    <button id="applyFiltersBtn" class="btn-primary w-full mb-2">Apply Filters</button>
-                    <button id="resetFiltersBtn" class="btn-secondary w-full">Reset Filters</button>
+                <!-- Exam Cards Grid -->
+                <div class="exam-grid" id="examGrid">
+                    <!-- Cards populated via JS -->
                 </div>
-            </div>
-        </aside>
-
-        <!-- Exam Grid -->
-        <section class="exam-grid-container">
-            <div class="grid-header">
-                <h2 id="gridTitle">All Exams</h2>
-                <div class="grid-actions">
-                    <span id="resultsCount">0 results</span>
+                
+                <div class="load-more-container text-center mt-5">
+                    <button class="btn-secondary" id="loadMoreBtn" style="display: none;">Load More Exams</button>
                 </div>
-            </div>
-            
-            <div class="exam-grid" id="examGrid">
-                <!-- Cards will be injected here via JS -->
-            </div>
-            
-            <div class="load-more-container">
-                <button id="loadMoreBtn" class="btn-secondary" style="display: none;">Load More</button>
-            </div>
-        </section>
+            </section>
         </div>
 
         <!-- Career Roadmap SVG -->
@@ -303,8 +258,8 @@
             <div class="drawer-title-group">
                 <div class="volume-badge" id="detailVolumeBadge">Vol.1</div>
                 <h2 id="detailAcronym">GATE</h2>
-                <button class="btn-icon" id="detailBookmarkBtn"><i class="fa-regular fa-star"></i></button>
-                <button class="btn-icon" id="closeDrawer"><i class="fa-solid fa-xmark"></i></button>
+                <button class="btn-icon" id="detailBookmarkBtn" title="Bookmark Exam"><i class="fa-regular fa-star"></i></button>
+                <button class="close-btn" id="closeDrawer" title="Close Drawer" style="background: #ef4444 !important; color: white !important; font-size: 1.2rem !important; border-radius: 50%; width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; border: none; margin-left: auto;"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <p id="detailName">Graduate Aptitude Test in Engineering</p>
             <div class="drawer-tabs">
@@ -368,24 +323,18 @@
                 </div>
             </div>
 
-            <!-- Career Tab -->
+            <!-- Career Tab (Populated dynamically by JS via #detCareer) -->
             <div class="tab-pane" id="tab-career">
-                <div class="salary-card">
-                    <h3>Salary Range</h3>
-                    <div class="salary-amount" id="detSalaryRange">-</div>
-                    <p id="detSalaryDetails"></p>
-                </div>
-                <div class="career-progression mt-4" id="detProgression">
-                    <h3>Career Progression</h3>
-                    <div class="timeline"></div>
+                <div id="detCareer">
+                    <!-- Injected via JS -->
                 </div>
             </div>
 
-            <!-- Resources Tab -->
+            <!-- Resources Tab (Populated dynamically by JS via #detResources) -->
             <div class="tab-pane" id="tab-resources">
-                <ul class="resources-list" id="detResources">
+                <div id="detResources">
                     <!-- Injected via JS -->
-                </ul>
+                </div>
             </div>
 
             <!-- Real-Time Insights Tab -->
