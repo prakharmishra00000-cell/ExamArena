@@ -264,6 +264,13 @@ async function fetchStats() {
         const data = await res.json();
         state.stats = data;
         animateCounter(elements.statTotalExams, 0, data.totalExams || 538, 2000);
+
+        // Dynamically populate category dropdown from backend categories
+        if (data.categories && elements.categoryFilter) {
+            const categories = Object.keys(data.categories).sort();
+            elements.categoryFilter.innerHTML = '<option value="">All Categories</option>' +
+                categories.map(c => `<option value="${c}">${c}</option>`).join('');
+        }
     } catch (err) {
         console.error('Failed to fetch stats:', err);
         animateCounter(elements.statTotalExams, 0, 538, 2000);
