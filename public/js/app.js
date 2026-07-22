@@ -129,8 +129,32 @@ function setupEventListeners() {
             item.addEventListener('click', () => {
                 elements.catItems.forEach(ci => ci.classList.remove('active'));
                 item.classList.add('active');
-                state.filters.category = item.dataset.cat || '';
-                if (elements.categoryFilter) elements.categoryFilter.value = state.filters.category;
+                
+                const type = item.dataset.type;
+                const val = item.dataset.val || '';
+
+                // Reset specific filter sub-states
+                state.filters.category = '';
+                state.filters.edu = '';
+                state.filters.sector = '';
+                state.filters.location = '';
+                state.filters.domain = '';
+                state.filters.branch = '';
+                state.filters.salaryGt10 = false;
+                state.filters.noInt = false;
+                state.filters.women = false;
+                state.filters.finalYear = false;
+                state.filters.remote = false;
+                state.filters.maxAge = 45;
+
+                if (type === 'edu') state.filters.edu = val;
+                else if (type === 'sector') state.filters.sector = val;
+                else if (type === 'location') state.filters.location = val;
+                else if (type === 'domain') state.filters.domain = val;
+                else if (type === 'branch') state.filters.branch = val;
+                else if (type === 'age') state.filters.maxAge = parseInt(val);
+                else if (type === 'flag' && val) state.filters[val] = true;
+
                 state.currentPage = 1;
                 fetchExams();
             });
@@ -297,8 +321,13 @@ function setupEventListeners() {
         elements.aiCompareBtn.addEventListener('click', handleAICompare);
     }
 
-    // AI Chat
-    elements.aiChatFab.addEventListener('click', () => elements.aiChatPanel.classList.add('open'));
+    // AI Chat FAB & Wrapper
+    const fabWrapper = document.getElementById('aiChatFabWrapper');
+    if (fabWrapper) {
+        fabWrapper.addEventListener('click', () => elements.aiChatPanel.classList.add('open'));
+    } else {
+        elements.aiChatFab.addEventListener('click', () => elements.aiChatPanel.classList.add('open'));
+    }
     elements.closeChatBtn.addEventListener('click', () => elements.aiChatPanel.classList.remove('open'));
     elements.chatForm.addEventListener('submit', handleChatSubmit);
 

@@ -98,32 +98,55 @@
     <main class="main-content">
         <!-- Permanent Category Sidebar + Main Content Layout -->
         <div class="content-layout">
-            <!-- Left Category Sidebar -->
+            <!-- Left Category Sidebar with Exact Specified Filters -->
             <aside class="sidebar-category" id="sidebarCategory">
                 <div class="sidebar-header">
-                    <i class="fa-solid fa-list-check text-blue"></i>
-                    <span>Categories</span>
+                    <i class="fa-solid fa-filter text-blue"></i>
+                    <span>Quick Filters</span>
                 </div>
-                <ul class="category-menu" id="categoryMenu">
-                    <li class="cat-item active" data-cat=""><i class="fa-solid fa-layer-group text-blue"></i> All Categories</li>
-                    <li class="cat-item" data-cat="PSU Recruitment"><i class="fa-solid fa-building text-purple"></i> PSU Recruitment</li>
-                    <li class="cat-item" data-cat="Maharatna PSU"><i class="fa-solid fa-crown text-amber"></i> Maharatna PSUs</li>
-                    <li class="cat-item" data-cat="Civil Services / Defence"><i class="fa-solid fa-shield-halved text-red"></i> Civil Services & Defence</li>
-                    <li class="cat-item" data-cat="Staff Selection"><i class="fa-solid fa-clipboard-check text-cyan"></i> Staff Selection (SSC)</li>
-                    <li class="cat-item" data-cat="Railways"><i class="fa-solid fa-train text-orange"></i> Railways (RRB)</li>
-                    <li class="cat-item" data-cat="Banking"><i class="fa-solid fa-building-columns text-green"></i> Banking (IBPS/SBI/RBI)</li>
-                    <li class="cat-item" data-cat="Insurance"><i class="fa-solid fa-hospital-user text-pink"></i> Insurance (LIC/NIACL)</li>
-                    <li class="cat-item" data-cat="State AE/JE"><i class="fa-solid fa-map-location-dot text-blue"></i> State AE & JE Exams</li>
-                    <li class="cat-item" data-cat="MBA Entrances - India"><i class="fa-solid fa-graduation-cap text-purple"></i> MBA Entrances (CAT)</li>
-                    <li class="cat-item" data-cat="International MBA"><i class="fa-solid fa-globe text-cyan"></i> International MBA (GMAT)</li>
-                    <li class="cat-item" data-cat="M.Tech/MS Admissions"><i class="fa-solid fa-microscope text-amber"></i> M.Tech & MS Admissions</li>
-                    <li class="cat-item" data-cat="Research Fellowships"><i class="fa-solid fa-atom text-green"></i> Research & PhD (CSIR/PMRF)</li>
-                    <li class="cat-item" data-cat="US Engineering Licensure"><i class="fa-solid fa-award text-red"></i> US Licensure (FE/PE)</li>
-                    <li class="cat-item" data-cat="Canada Engineering Licensure"><i class="fa-solid fa-passport text-blue"></i> Canada PEng & NPPE</li>
-                    <li class="cat-item" data-cat="UK Engineering Licensure"><i class="fa-solid fa-certificate text-purple"></i> UK CEng Chartered</li>
-                    <li class="cat-item" data-cat="Australia Engineering Licensure"><i class="fa-solid fa-compass text-green"></i> Australia CPEng</li>
-                    <li class="cat-item" data-cat="Defence"><i class="fa-solid fa-jet-fighter text-red"></i> Defence (NDA/CDS/AFCAT)</li>
-                    <li class="cat-item" data-cat="International Scholarships"><i class="fa-solid fa-user-graduate text-amber"></i> Scholarships (Fulbright/DAAD)</li>
+                <div class="category-group-label">ALL EXAMS</div>
+                <ul class="category-menu">
+                    <li class="cat-item active" data-type="all" data-val=""><i class="fa-solid fa-globe text-blue"></i> Show All Exams</li>
+                </ul>
+
+                <div class="category-group-label">EDUCATION LEVEL</div>
+                <ul class="category-menu">
+                    <li class="cat-item" data-type="edu" data-val="10th"><i class="fa-solid fa-book-open text-cyan"></i> 10th Pass</li>
+                    <li class="cat-item" data-type="edu" data-val="12th"><i class="fa-solid fa-graduation-cap text-purple"></i> 12th Pass</li>
+                    <li class="cat-item" data-type="edu" data-val="Diploma"><i class="fa-solid fa-certificate text-amber"></i> Diploma</li>
+                    <li class="cat-item" data-type="edu" data-val="Graduation"><i class="fa-solid fa-user-graduate text-green"></i> Graduation</li>
+                    <li class="cat-item" data-type="edu" data-val="B.Tech"><i class="fa-solid fa-microchip text-blue"></i> B.Tech / B.E.</li>
+                    <li class="cat-item" data-type="edu" data-val="MBA"><i class="fa-solid fa-briefcase text-pink"></i> MBA</li>
+                </ul>
+
+                <div class="category-group-label">SECTOR & LOCATION</div>
+                <ul class="category-menu">
+                    <li class="cat-item" data-type="sector" data-val="Government"><i class="fa-solid fa-landmark text-red"></i> Government</li>
+                    <li class="cat-item" data-type="sector" data-val="Private"><i class="fa-solid fa-building text-purple"></i> Private</li>
+                    <li class="cat-item" data-type="location" data-val="India"><i class="fa-solid fa-flag text-orange"></i> India</li>
+                    <li class="cat-item" data-type="location" data-val="Abroad"><i class="fa-solid fa-plane text-cyan"></i> Abroad / Overseas</li>
+                    <li class="cat-item" data-type="domain" data-val="Technical"><i class="fa-solid fa-gears text-blue"></i> Technical</li>
+                    <li class="cat-item" data-type="domain" data-val="Non-Technical"><i class="fa-solid fa-calculator text-amber"></i> Non-Technical</li>
+                </ul>
+
+                <div class="category-group-label">ENGINEERING BRANCH</div>
+                <ul class="category-menu">
+                    <li class="cat-item" data-type="branch" data-val="Mechanical"><i class="fa-solid fa-wrench text-blue"></i> Mechanical</li>
+                    <li class="cat-item" data-type="branch" data-val="Civil"><i class="fa-solid fa-trowel-bricks text-amber"></i> Civil</li>
+                    <li class="cat-item" data-type="branch" data-val="CSE"><i class="fa-solid fa-code text-cyan"></i> Computer Science (CSE)</li>
+                    <li class="cat-item" data-type="branch" data-val="ECE"><i class="fa-solid fa-satellite-dish text-purple"></i> Electronics (ECE)</li>
+                    <li class="cat-item" data-type="branch" data-val="EE"><i class="fa-solid fa-bolt text-yellow"></i> Electrical (EE)</li>
+                </ul>
+
+                <div class="category-group-label">FEATURE FILTERS</div>
+                <ul class="category-menu">
+                    <li class="cat-item" data-type="flag" data-val="salaryGt10"><i class="fa-solid fa-money-bill-wave text-green"></i> Salary > ₹10 LPA</li>
+                    <li class="cat-item" data-type="flag" data-val="noInt"><i class="fa-solid fa-user-check text-blue"></i> No Interview</li>
+                    <li class="cat-item" data-type="flag" data-val="women"><i class="fa-solid fa-venus text-pink"></i> Women-Only</li>
+                    <li class="cat-item" data-type="flag" data-val="finalYear"><i class="fa-solid fa-user-clock text-amber"></i> Final-Year Eligible</li>
+                    <li class="cat-item" data-type="age" data-val="25"><i class="fa-solid fa-calendar-check text-cyan"></i> Age ≤ 25 Years</li>
+                    <li class="cat-item" data-type="age" data-val="30"><i class="fa-solid fa-calendar-check text-purple"></i> Age ≤ 30 Years</li>
+                    <li class="cat-item" data-type="flag" data-val="remote"><i class="fa-solid fa-laptop-house text-green"></i> Remote / Overseas</li>
                 </ul>
             </aside>
 
@@ -408,10 +431,13 @@
         </div>
     </div>
 
-    <!-- AI Chat Assistant -->
-    <button class="ai-chat-fab" id="aiChatFab">
-        <i class="fa-solid fa-robot"></i>
-    </button>
+    <!-- AI Chat Assistant Floating Trigger -->
+    <div class="ai-chat-fab-wrapper" id="aiChatFabWrapper">
+        <div class="ai-chat-bubble-hint"><i class="fa-solid fa-sparkles text-amber"></i> Ask ExamArena AI...</div>
+        <button class="ai-chat-fab" id="aiChatFab">
+            <i class="fa-solid fa-robot"></i>
+        </button>
+    </div>
     
     <div class="ai-chat-panel" id="aiChatPanel">
         <div class="chat-header">
