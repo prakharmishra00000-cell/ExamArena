@@ -684,7 +684,7 @@ function renderDrawerDetails(exam) {
     if (aiUpdateBtn) {
         aiUpdateBtn.onclick = () => {
             elements.aiChatPanel.classList.add('open');
-            document.getElementById('chatInput').value = `Tell me all about ${exam.acronym || exam.name} syllabus and career growth.`;
+            document.getElementById('chatInput').value = `Give me a comprehensive overview of ${exam.acronym || exam.name}, covering syllabus, career prospects, eligibility, exam pattern, benefits, and any other relevant details.`;
             handleChatSubmit(new Event('submit'));
         };
     }
