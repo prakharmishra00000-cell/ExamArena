@@ -292,15 +292,17 @@ function setupEventListeners() {
         fetchExams(true);
     });
 
-    // Bookmarks Navigation
-    elements.bookmarkToggle.addEventListener('click', () => {
-        elements.navTabs.forEach(t => t.classList.remove('active'));
-        elements.gridTitle.textContent = "My Saved Bookmarks";
-        const bookmarkedExams = state.exams.filter(e => state.bookmarks.includes(e.id));
-        renderCards(bookmarkedExams);
-        elements.resultsCount.textContent = `${bookmarkedExams.length} saved`;
-        elements.loadMoreBtn.style.display = 'none';
-    });
+    // Bookmarks Navigation (button removed from nav, guard against null)
+    if (elements.bookmarkToggle) {
+        elements.bookmarkToggle.addEventListener('click', () => {
+            elements.navTabs.forEach(t => t.classList.remove('active'));
+            elements.gridTitle.textContent = "My Saved Bookmarks";
+            const bookmarkedExams = state.exams.filter(e => state.bookmarks.includes(e.id));
+            renderCards(bookmarkedExams);
+            if (elements.resultsCount) elements.resultsCount.textContent = `${bookmarkedExams.length} saved`;
+            elements.loadMoreBtn.style.display = 'none';
+        });
+    }
 
     // Compare Controls & Close Cross Button
     elements.clearCompareBtn.addEventListener('click', () => {
