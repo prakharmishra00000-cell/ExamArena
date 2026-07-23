@@ -185,8 +185,8 @@ function setupEventListeners() {
     });
 
     // Filter Panel Toggles
-    elements.filterToggle.addEventListener('click', () => elements.filterPanel.classList.add('open'));
-    elements.closeFilters.addEventListener('click', () => elements.filterPanel.classList.remove('open'));
+    if (elements.filterToggle) elements.filterToggle.addEventListener('click', () => elements.filterPanel.classList.add('open'));
+    if (elements.closeFilters) elements.closeFilters.addEventListener('click', () => elements.filterPanel.classList.remove('open'));
     
     // Age Slider
     if (elements.filterAge) {
@@ -536,7 +536,7 @@ async function fetchExams(append = false) {
         if (!append) {
             elements.gridTitle.textContent = state.filters.category ? `${state.filters.category} Exams` : (state.filters.volume === 'all' ? "All Exams" : `Volume ${state.filters.volume} Exams`);
         }
-        elements.resultsCount.textContent = `${filtered.length} results`;
+        if (elements.resultsCount) elements.resultsCount.textContent = `${filtered.length} results`;
         
         renderCards(filtered, append);
         
